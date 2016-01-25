@@ -84,6 +84,7 @@ figure{
 }
 article{
 	min-width: 25em;
+    max-width: 30em;
 	margin-bottom: 1em;
 	padding: 1em 0.5em;
 	display: inline;
