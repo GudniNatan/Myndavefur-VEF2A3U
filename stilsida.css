@@ -20,10 +20,11 @@ body {
 }
 div, article, nav, header, aside, footer, body{
 	box-sizing: border-box;
+    padding: 0;
 }
 main {
     height: inherit;
-    background-color: rgba(200, 200, 200, .7);
+    background-color: rgba(200, 200, 200, .4);
     background-attachment: fixed;
     order: 0;
     margin: 0;
@@ -32,6 +33,10 @@ main {
     align-content: flex-start;
     padding-top: 1em
 }
+div.containall{
+    display: flex;
+    margin: 0;
+}
 h1, h2, h4 {
 	margin: 0;
     padding-right: 1em
@@ -39,31 +44,56 @@ h1, h2, h4 {
 p {
     margin: 0;
 }
-nav{
+header{
 	width: 100%;
 	background-color: #1f6684;
 	text-align: center;
 }
+nav{
+    background-color: #DDD;
+    height: 100%;
+    border-bottom-left-radius: 2em;
+    min-width: 8em;
+}
+nav ul{
+    padding: 0;
+}
+nav ul li{
+    list-style-type: none;
+}
+nav ul li a{
+    padding-left: 3em;
+}
+a.current{
+    background-color: #0f303e;
+    color: #FFF;
+    width: 100%;
+    display: block;
+}
+a.current:hover{
+    background-color: #144052;
+}
 img{
 	max-width: 100%;
+    max-height: 15em;
 }
 figure{
 	width: 100%;
 	max-width: 100%;
-	display: inline-block;
+	display: block;
 }
 article{
-	max-width: 25%;
 	min-width: 25em;
 	margin-bottom: 1em;
 	padding: 1em 0.5em;
 	display: inline;
 	background-color: #0f303e;
-	border: 1px solid #444;
+	border: 1px solid #666;
+	border-radius: 0.5em;
 	color: #CCC;
 	text-align: center;
 }
-article *{
+article p{
 	display: inline-block;
 }
 footer{

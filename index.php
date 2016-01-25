@@ -1,6 +1,12 @@
+<?php
+    include'./includes/title.php';
+    $dir = 'img/slideshow';
+    $files = preg_grep('/^([^.])/', scandir($dir));
+    rsort($files);
+?>
 <!DOCTYPE html>
 <head>
-    <title>Dub16</title>
+    <title>Myndr<?php echo " - " . "{$title}"; ?></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,87 +16,26 @@
     <link rel="stylesheet" type="text/css" href="stilsida.css">
 </head>
 <body>
-    <nav class="custom-wrapper pure-g" id="menu">
-            <p>Myndasíða</p>
-    </nav>
-<main>
-    <article>
-        <p>Titill á mynd</p>
-            <figure class="img">
-            <a href="browse.php#nafn"><img src="img/slideshow/1.jpg"></a>
+    <header class="custom-wrapper pure-g" id="menu">
+            <h1>Myndr</h1>            
+    </header>
+<div class="containall">
+    <?php include("./includes/menu.php") ?>
+    <main>
+        <?php 
+            foreach ($files as $key => $value) {
+                echo "<article>
+            <p>$value</p>
+            <figure class='img'>
+                <a href='browse.php#img$key'><img src='img/slideshow/$value'></a>
             </figure>
         </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/2.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/3.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/4.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/5.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/1.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/1.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/2.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/3.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/4.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/5.jpg">
-        </figure>
-    </article>
-    <article>
-        <p>Titill á mynd</p>
-        <figure class="img">
-            <img src="img/slideshow/1.jpg">
-        </figure>
-    </article>
-</main>
-<footer>
-    <p>2016, Allur réttur áskilinn</p>
-    <p>Guðni Natan Gunnarsson</p>
-</footer>
+        ";
+            }
+        ?>
+    </main>
+</div>
+<?php include("./includes/footer.html") ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </body>
 </html>
