@@ -1,12 +1,11 @@
 <?php
-    $dir = 'img/slideshow';
+    $dir = 'img/showcase';
     $files = preg_grep('/^([^.])/', scandir($dir));
-    rsort($files);
     foreach ($files as $key => $value) {
-    echo "<article>
+        echo "<article>
             <p>$value</p>
             <figure class='img'>
-                <a href='browse.php#img$key'><img src='img/slideshow/$value'></a>
+                <a href='browse.php?img={$key}'><img src='{$dir}/{$value}'></a>
             </figure>
         </article>
         ";

@@ -1,5 +1,6 @@
 <?php $currentPage = basename($_SERVER['SCRIPT_FILENAME']); ?>
 <nav>
+	<h3>Síður:</h3>
 	<ul>
 		<li>
 			<a href="index.php" <?php if ($currentPage == "index.php") { echo "class=\"current\""; } ?>>Heim</a>
