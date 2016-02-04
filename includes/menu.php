@@ -11,5 +11,8 @@
 		<li>
 			<a href="browse.php" <?php if ($currentPage == "browse.php") { echo "class=\"current\""; } ?>>Browse</a>
 		</li>
+		<li>
+			<a href="upload.php" <?php if ($currentPage == "upload.php") { echo "class=\"current\""; } ?>>Upload</a>
+		</li>
 	</ul>
 </nav>
