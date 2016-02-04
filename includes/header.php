@@ -2,7 +2,7 @@
 //Velur random mynd í header
     $dir = 'img/header/';
     if (isset($_SESSION["files"]) == false || count($_SESSION["files"]) == 0) {
-    	array_multisort(array_map('filemtime', ($_SESSION["files"] = glob("{$dir}*.{jpg,png,gif,jpeg}", GLOB_BRACE))), SORT_DESC, $_SESSION["files"]);
+    	$_SESSION["files"] = glob("{$dir}*.{jpg,png,gif,jpeg}", GLOB_BRACE);
     }
     shuffle($_SESSION["files"]);
     $imgpath = $_SESSION["files"][0];
