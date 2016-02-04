@@ -69,6 +69,14 @@ header div{
     display: inline-flex;
     align-items: center;
 }
+@-moz-document url-prefix() { 
+  ._i_myndun {
+    color: #FFFAFA;
+  }
+  header div{
+    background-color: rgba(0,0,0,0.5);
+  }
+}
 nav{
     background-color: #DDD;
     height: 100%;
