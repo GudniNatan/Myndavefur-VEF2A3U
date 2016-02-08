@@ -5,3 +5,6 @@
  if ($title == "Ummig") {
  	$title = "Um mig";
  }
+ if ($title == "Login") {
+ 	$title = "Login/Register";
+ }

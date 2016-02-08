@@ -1,5 +1,5 @@
 <form action="upload.php" method="post" enctype="multipart/form-data">
-    Select image to upload:
+    Select image to upload (Max 2mb):
     <input type="file" name="fileToUpload" id="fileToUpload">
     <input type="submit" value="Upload Image" name="submit">
     <p>(Bilar því ég er ekki með aðgang að upload?)</p>
@@ -27,7 +27,7 @@ if (!empty($_POST)){
 	    $uploadOk = 0;
 	}
 	// Check file size
-	if ($_FILES["fileToUpload"]["size"] > 500000) {
+	if ($_FILES["fileToUpload"]["size"] > 2000000) {
 	    echo "Sorry, your file is too large.";
 	    $uploadOk = 0;
 	}

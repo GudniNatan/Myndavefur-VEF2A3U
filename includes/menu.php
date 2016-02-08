@@ -9,7 +9,10 @@
 			<a href="ummig.php" <?php if ($currentPage == "ummig.php") { echo "class=\"current\""; } ?>>Um mig</a>
 		</li>
 		<li>
-			<a href="browse.php" <?php if ($currentPage == "browse.php") { echo "class=\"current\""; } ?>>Browse</a>
+			<a href="browse.php?img=0" <?php if ($currentPage == "browse.php") { echo "class=\"current\""; } ?>>Browse</a>
+		</li>
+		<li>
+			<a href="login.php" <?php if ($currentPage == "login.php") { echo "class=\"current\""; } ?>>Login/Register</a>
 		</li>
 		<li>
 			<a href="upload.php" <?php if ($currentPage == "upload.php") { echo "class=\"current\""; } ?>>Upload</a>
