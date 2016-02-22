@@ -11,7 +11,6 @@ html {
 }
 body {
     background-color: #0f303e;
-    background-image: url(../img/smallbackground.jpg);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: fixed;
@@ -32,7 +31,7 @@ main {
     justify-content: space-around;
     max-width: 80em;
     align-content: flex-start;
-    padding: 1em
+    padding: 1em;
 }
 div.containall{
     margin: 0;
@@ -48,7 +47,7 @@ header{
 	width: 100%;
 	background-color: #1f6684;
 	text-align: center;
-    min-height: 10em;
+    min-height: 8em;
     height: 20vh;
     overflow: hidden;
     background-size: cover;
@@ -63,11 +62,15 @@ header{
     color: rgb(0, 0, 0);
     line-height: 1;
 }
+.headerLink{
+    width: 100%;
+}
+header p{
+    margin-top: 2vh;
+}
 header div{
     height: 100%;
     background-color: rgba(0,0,0,0.1);
-    display: inline-flex;
-    align-items: center;
 }
 @-moz-document url-prefix() { 
   ._i_myndun {
@@ -120,7 +123,7 @@ a.current{
 a.current:hover{
     background-color: #144052;
 }
-a.headerlink:hover, a.headerlink:visited{
+a.headerLink:hover, a.headerLink:visited, a.headerLink:active{
     text-decoration: none;
 }
 img{
@@ -144,6 +147,10 @@ article{
 	color: #CCC;
 	text-align: center;
     overflow: hidden;
+}
+.imageMenu{
+    text-align: center;
+    margin-top: 1em;
 }
 article img{
     max-height: 15em;
@@ -190,6 +197,11 @@ footer{
         text-align: center;
         width: 100%;
         display: block;
+    }
+}
+@media (min-width: 90em){
+    main{
+        width: 80em;
     }
 }
 @media (min-width: 40em){

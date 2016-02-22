@@ -14,8 +14,13 @@
 		<li>
 			<a href="login.php" <?php if ($currentPage == "login.php") { echo "class=\"current\""; } ?>>Login/Register</a>
 		</li>
+		<?php if (isset($_SESSION['username'])): #Ef notandi er skráður inn?>
 		<li>
 			<a href="upload.php" <?php if ($currentPage == "upload.php") { echo "class=\"current\""; } ?>>Upload</a>
 		</li>
+		<li>
+			<a href="upload.php" <?php if ($currentPage == "upload.php") { echo "class=\"current\""; } ?>>Þínar myndir</a>
+		</li>
+		<?php endif ?>
 	</ul>
 </nav>

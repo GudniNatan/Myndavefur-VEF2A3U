@@ -1,13 +1,13 @@
 <?php
-    $dir = 'img/showcase/';
-    array_multisort(array_map('filemtime', ($images = glob("{$dir}*.{jpg,png,gif,jpeg}", GLOB_BRACE))), SORT_DESC, $images);
+    require("getimages.php");
 
-    foreach ($images as $key => $value) {
+    for ($i= count($images) - 1; $i >= 0; $i--) { 
         echo "<article>
-            <p>".basename($value)."</p>
+            <p>".basename($images[$i])."</p>
             <figure class='img'>
-                <a href='browse.php?img={$key}'><img src='{$value}'></a>
+                <a href='browse.php?img={$i}'><img src='{$images[$i]}'></a>
             </figure>
         </article>
         ";
     }
+    

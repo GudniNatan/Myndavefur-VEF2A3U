@@ -1,4 +1,4 @@
-<form action="upload.php" method="post" enctype="multipart/form-data">
+<form action="" method="post" enctype="multipart/form-data">
     Select image to upload (Max 2mb):
     <input type="file" name="fileToUpload" id="fileToUpload">
     <input type="submit" value="Upload Image" name="submit">
@@ -32,8 +32,8 @@ if (!empty($_POST)){
 	    $uploadOk = 0;
 	}
 	// Allow certain file formats
-	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-	&& $imageFileType != "gif" ) {
+	if(strtolower($imageFileType) != "jpg" && strtolower($imageFileType) != "png" && strtolower($imageFileType) != "jpeg"
+	&& strtolower($imageFileType) != "gif" ) {
 	    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
 	    $uploadOk = 0;
 	}

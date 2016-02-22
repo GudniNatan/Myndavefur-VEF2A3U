@@ -1,5 +1,10 @@
 <?php
-    session_start(); 
+    session_start();
+    #check if user is logged in, else redirect to 404 page
+    #if (!isset($_SESSION['username'])) {
+    #	header("Location: index.php");
+	#	die();
+    #}
  ?>
 <?php include'./includes/title.php';?>
 <!DOCTYPE html>
