@@ -9,7 +9,10 @@ $now = time();
 $redirect = 'login.php';
 
 // if timelimit has expired, destroy session and redirect
-if ($now > $_SESSION['start'] + $timelimit) {
+if (!isset($_SESSION['start'])) {
+    # do nothing
+}
+else if ($now > $_SESSION['start'] + $timelimit) {
     $_SESSION = [];
     // invalidate the session cookie
     if (isset($_COOKIE[session_name()])) {
