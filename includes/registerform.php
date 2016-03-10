@@ -1,48 +1,69 @@
-<?php  
-if (!empty($_POST["g-recaptcha-response"])){
-	$response = $_POST["g-recaptcha-response"];
-	$secret = "6LdLtxcTAAAAAPl7aQ1Oa7Sm7vAVAj5k8FKO2Rqg";
-	$remoteip = $_SERVER['REMOTE_ADDR'];
-	echo $response;
-}
-?>
-
 <form method="post" action="">
-	<?php if ($missing || $errors) { ?>
-	<p class="warning">Lagaðu eftirfarandi villur.</p>
-	<?php } ?>
-	<label for="name">Name:
-	<?php if ($missing && in_array('name', $missing)) { ?>
-	<span class="warning">Please enter your name</span>
-	<?php } ?>
-	</label>
     <label>Nýskrá</label>
-        <fieldset>
-           	<input type="text" name="username" placeholder="Notendanafn" required pattern="{5}" title="Notendanafn, minnst fimm stafir">
-        	<input type="password" name="password" placeholder="Lykilorð" required title="Lykilorð">
-        </fieldset>
-        <fieldset>
-        	<input type="email" name="email" placeholder="Netfang" required title="Netfang">
-        	<input type="text" name="name" placeholder="Fullt Nafn" required title="Fullt Nafn">
-        </fieldset>
-        <fieldset>
+        <div class="form-group">
+        	<p for="username">Notendanafn:
+			<?php if ($missing && in_array('username', $missing)) { ?>
+			<span class="warning">Filla þarf út þennan reit</span>
+			<?php } ?>
+			</p>
+           	<input type="text" name="username" placeholder="Notendanafn*" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,20}$" title="Notendanafn, minnst fimm stafir" <?php if (($missing || $errors) && isset($username)) { echo 'value="' . htmlentities($username) . '"'; } ?>>
+        </div>
+        <div class="form-group">
+           	<p for="password">Lykilorð:
+			<?php if ($missing && in_array('password', $missing)) { ?>
+			<span class="warning">Filla þarf út þennan reit</span>
+			<?php } ?>
+			</p>
+        	<input type="password" name="password" placeholder="Lykilorð*" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,20}$" title="Lykilorð" <?php if (($missing || $errors) && isset($password)) { echo 'value="' . htmlentities($password) . '"'; } ?>>
+        </div>
+        <div class="form-group">
+        	<p for="email">Netfang:
+			<?php if ($missing && in_array('email', $missing)) { ?>
+			<span class="warning">Filla þarf út þennan reit</span>
+			<?php } ?>
+			</p>
+        	<input type="email" name="email" placeholder="Netfang*" required title="Netfang" <?php if (($missing || $errors) && isset($email)) { echo 'value="' . htmlentities($email) . '"'; } ?>>
+        </div>
+        <div class="form-group">
+        	<p for="name">Nafn:
+			<?php if ($missing && in_array('name', $missing)) { ?>
+			<span class="warning">Filla þarf út þennan reit</span>
+			<?php } ?>
+			</p>
+        	<input type="text" name="name" placeholder="Fullt Nafn*" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,50}$" title="Fullt Nafn" <?php if (($missing || $errors) && isset($name)) { echo 'value="' . htmlentities($name) . '"'; } ?>>
+        </div>
+        <div class="form-group">
         	<label>Öryggisspurningar:</label>
-        	<p>1</p>
+        	<p>1
+        	<?php if ($missing && (in_array('sq1', $missing) || in_array('sq1ans', $missing))) { ?>
+			<span class="warning">Filla þarf út þennan reit</span>
+			<?php } ?>
+			</p>
         	<select name="sq1" required>
-        		<option value="1">Hver var fyrsti kennarinn þinn?</option>
-        		<option value="2">Hver er uppáhalds bókin þín?</option>
-        		<option value="3">Hvar áttir þú heima sem barn?</option>
+        		<option value="1" <?php if (($missing || $errors) && isset($sq1) && htmlentities($sq1) == '1') { echo 'selected="selected"'; } ?>>Hver var fyrsti kennarinn þinn?</option>
+        		<option value="2" <?php if (($missing || $errors) && isset($sq1) && htmlentities($sq1) == '2') { echo 'selected="selected"'; } ?>>Hver er uppáhalds bókin þín?</option>
+        		<option value="3" <?php if (($missing || $errors) && isset($sq1) && htmlentities($sq1) == '3') { echo 'selected="selected"'; } ?>>Hvar áttir þú heima sem barn?</option>
         	</select>
-        	<input type="text" name="sq1ans" placeholder="..." required title="Svaraðu öryggisspurningunni.">
+        	<input type="text" name="sq1ans" placeholder="...*" required title="Svaraðu öryggisspurningunni." <?php if (($missing || $errors) && isset($sq1ans)) { echo 'value="' . htmlentities($sq1ans) . '"'; } ?>>
 
-        	<p>2</p>
-        	<select name="sq1" required>
-        		<option value="1">Hver var besti æskuvinur þinn?</option>
-        		<option value="2">Hver er uppáhalds skáldaða persónan þín?</option>
-        		<option value="3">Hvað vildir þú vinna við sem barn?</option>
+        	<p>2
+        	<?php if ($missing && (in_array('sq1', $missing) || in_array('sq1ans', $missing))) { ?>
+			<span class="warning">Filla þarf út þennan reit</span>
+			<?php } ?>
+			</p>
+        	<select name="sq2" required>
+        		<option value="1" <?php if (($missing || $errors) && isset($sq2) && htmlentities($sq2) == '1') { echo 'selected="selected"'; } ?>>Hver var besti æskuvinur þinn?</option>
+        		<option value="2" <?php if (($missing || $errors) && isset($sq2) && htmlentities($sq2) == '2') { echo 'selected="selected"'; } ?>>Uppáhalds skáldaða persónan þín?</option>
+        		<option value="3" <?php if (($missing || $errors) && isset($sq2) && htmlentities($sq2) == '3') { echo 'selected="selected"'; } ?>>Hvað hét fyrsta gæludýrið þitt?</option>
         	</select>
-        	<input type="text" name="sq2ans" placeholder="..." required title="Svaraðu öryggisspurningunni.">
-		</fieldset>
+        	<input type="text" name="sq2ans" placeholder="...*" required title="Svaraðu öryggisspurningunni." <?php if (($missing || $errors) && isset($sq2ans)) { echo 'value="' . htmlentities($sq2ans) . '"'; } ?>>
+		</div>
+	<?php if (($missing || $errors) && (in_array('g-recaptcha', $missing) || in_array('g-recaptcha', $errors))) { ?>
+	<p class="warning">Sannaðu að þú sért ekki vélmenni.</p>
+	<?php } ?>
 	<div class="g-recaptcha" data-sitekey="6LdLtxcTAAAAAJrk7gzmEJmNJYoGyt9kpqBDm3_g"></div>
-	<button name="send" type="submit" class="pure-button pure-input-1 pure-button-primary">Skrá inn</button>
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=is"></script>
+    </script>
+	<button name="sendregister" type="submit" class="pure-button pure-input-1 pure-button-primary register">Skrá inn</button>
+	<p><i>*Fylla þarf út þessa reiti</i></p>
 </form>

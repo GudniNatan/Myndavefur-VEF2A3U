@@ -1,58 +1,62 @@
 @import url(https://fonts.googleapis.com/css?family=Inconsolata);
-body,
-main {
-    display: flex;
-    display: -ms-flexbox;
-    flex-wrap: wrap;
-    color: #DDD;
-}
+
 html {
     height: 100%
 }
 body {
-    background-color: #0f303e;
+    height: 100%;
+    color: #DDD;
+    background-color: #123a4a;
     background-position: top center;
-    background-repeat: no-repeat;
-    background-size: fixed;
+    background-repeat: repeat,no-repeat;
     margin: 0;
     max-width: 100%;
-    justify-content: center
+    background-image: url(https://assets.l.is/img/Layout/bg_pattern_main.png),-webkit-linear-gradient(top,#1b586e 0%,#184e62 23%,#154456 58%,#123a4a 93%,#123a4a 100%);
+    background-image: url(https://assets.l.is/img/Layout/bg_pattern_main.png),-moz-linear-gradient(top,#1b586e 0%,#184e62 23%,#154456 58%,#123a4a 93%,#123a4a 100%)
 }
 div, article, nav, header, aside, footer, body{
 	box-sizing: border-box;
     padding: 0;
 }
 main {
+    display: flex;
+    display: -ms-flexbox;
+    flex-wrap: wrap;
+    color: #DDD;
     height: inherit;
     background-color: rgba(200, 200, 200, .5);
     background-attachment: fixed;
     order: 0;
     margin: 0;
     justify-content: space-around;
-    max-width: 80em;
+    max-width: 90em;
     align-content: flex-start;
     padding: 1em;
+    height: auto;
 }
 div.containall{
     margin: 0;
 }
+div.message{
+    width: 100%;
+}
 h1, h2, h4 {
 	margin: 0;
-    padding-right: 1em
 }
 p {
     margin: 0;
 }
 header{
 	width: 100%;
-	background-color: #1f6684;
 	text-align: center;
     min-height: 8em;
     height: 20vh;
     overflow: hidden;
+    background-color: #1f6684;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
+    background-image: url('img/header/N8X7L4e.png');
 }
 ._i_myndun { 
     font-size: 15vh;
@@ -68,16 +72,35 @@ header{
 header p{
     margin-top: 2vh;
 }
-header div{
+header .logo{
     height: 100%;
     background-color: rgba(0,0,0,0.1);
+}
+header .userinfo{
+    margin: 0;
+    position: absolute;
+    right: 1em;
+    top: 1em;
+    text-align: left;
+    background-color: rgba(0, 189, 134, 0.6);
+    padding: 0.5em;
+    border-radius: 1em;
+}
+header .userinfo p{
+    margin: 0;
+    padding: 1em;
+    border: 0.15em dashed black;
+    border-radius: 1em;
+}
+header .userinfo p a{
+    color: orange;
 }
 @-moz-document url-prefix() { 
   ._i_myndun {
     color: #FFFAFA;
   }
-  header div{
-    background-color: rgba(0,0,0,0.5);
+  header .logo{
+    background-color: rgba(0,0,0,0.3);
   }
 }
 .quote{
@@ -92,10 +115,14 @@ header div{
     padding-top: 18vh;
     padding-left: 2em;
 }
+.warning{
+    color: #b30000;
+}
 nav{
+    align-self: flex-start;
+    display: block;
+    width: 100%;
     background-color: #DDD;
-    height: 100%;
-    border-bottom-left-radius: 2em;
     min-width: 10em;
     color: #444;
 }
@@ -105,20 +132,29 @@ nav h3{
     text-shadow: 0.1em 0.1em #AAA;
 }
 nav ul{
+    max-width: 90em;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
     padding: 0;
+    margin: 0 auto;
 }
 nav ul li{
     list-style-type: none;
+    flex-basis: 12em;
+    flex-grow: 1;
 }
 nav ul li a{
-    padding-left: 3em;
-    padding-right: 1em;
+    padding: .5em 3em;
+    display: block;
+    text-align: center;
 }
 a.current{
     background-color: #0f303e;
     color: #FFF;
     width: 100%;
     display: block;
+    overflow: hidden;
 }
 a.current:hover{
     background-color: #144052;
@@ -130,14 +166,19 @@ img{
 	max-width: 100%;
     max-height: 100%;
 }
+img.browseImg{
+    width: 100%;
+}
 figure{
 	width: 100%;
 	max-width: 100%;
 	display: block;
+    padding: 0 0.5em;
 }
 article{
 	width: 25em;
     max-width: 30em;
+    margin: 0 0.75em;
 	margin-bottom: 1em;
 	padding: 1em 0.5em;
 	display: inline;
@@ -147,6 +188,8 @@ article{
 	color: #CCC;
 	text-align: center;
     overflow: hidden;
+    flex-basis: 20em;
+    flex-grow: 1;
 }
 .imageMenu{
     text-align: center;
@@ -168,21 +211,46 @@ form div div div{
     margin: 1em auto;
 }
 footer{
+    color: rgb(0, 0, 0);
 	width: 100%;
-	background-color: #1f6684;
 	text-align: center;
+    align-self: flex-end;
+    background-color: #1f6684;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-image: url('img/footer.png');
+}
+.info{
+    color: #DDD;
+    display: inline-flex;
+    margin: .5em;
+    text-align: left;
+    background-color: rgba(0, 189, 134, 0.5);
+    padding: 0.5em;
+    border-radius: 1em;
+}
+.info div{
+    margin: 0;
+    padding: .5em 1em;
+    border: 0.15em dashed black;
+    border-radius: 1em;
+}
+#fileToUpload{
+    margin: 0 auto;
+}
+.sammie{
+    position: absolute;
+    left: .5em;
+    top: .5em;
 }
 @media (max-width: 40em) {
     .containall{
         max-width: 100%;
     }
-    h1, h2{
-        font-size: 0.8em;
-        margin-left: 0;
-        max-width: 100%;
-    }
     ._i_myndun{
         max-width: 100%;
+        font-size: 20vw;
     }
     form{
         max-width: 100%;
@@ -198,14 +266,22 @@ footer{
         width: 100%;
         display: block;
     }
+    header .userinfo{
+        display: none;
+    }
 }
 @media (min-width: 90em){
     main{
-        width: 80em;
+        width: 90em;
     }
 }
 @media (min-width: 40em){
     .containall{
         display: flex;
+        width: 100%;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
     }
 }

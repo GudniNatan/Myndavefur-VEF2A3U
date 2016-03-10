@@ -1,17 +1,15 @@
 <?php
 //Velur random mynd í header
-    $dir = 'img/header/';
-    if (isset($_SESSION["files"]) == false || count($_SESSION["files"]) == 0) {
-    	$_SESSION["files"] = glob("{$dir}*.{jpg,png,gif,jpeg}", GLOB_BRACE);
-    }
-    shuffle($_SESSION["files"]);
-    $imgpath = $_SESSION["files"][0];
-    unset($_SESSION["files"][0]);
     $qoutes = array("Þar sem enginn þekkir nafnið þitt.", "Núna á 50% afslætti", "Ég skoðaði vefsíðuna og dó ekki! 10/10", "Gakktu til liðs við okkur, við erum með smákökur", '"May the force be ever in your favor" - Spock', "Við geymum myndir");
     shuffle($qoutes);
   ?>
-<header class="custom-wrapper pure-g" id="menu" style="background-image: url('<?php echo $imgpath; ?>')">
-	<div>
+<header class="custom-wrapper pure-g" id="menu">
+	<?php if (isset($_SESSION['username'])):  ?>
+	<div class="userinfo">
+		<p>User: <?php echo $_SESSION['username']; ?> | <a href="logout.php">Logout</a></p>
+	</div>
+	<?php endif; ?>
+	<div class="logo">
 		<a href="index.php" class="headerLink"><h1 class="_i_myndun">(í)<i>myndun</i></h1></a>
 		<p>-<?php echo $qoutes[0]; ?></p>
 	</div>

@@ -1,6 +1,5 @@
 <?php $currentPage = basename($_SERVER['SCRIPT_FILENAME']); ?>
 <nav>
-	<h3>Síður:</h3>
 	<ul>
 		<li>
 			<a href="index.php" <?php if ($currentPage == "index.php") { echo "class=\"current\""; } ?>>Heim</a>
@@ -16,10 +15,7 @@
 		</li>
 		<?php if (isset($_SESSION['username'])): #Ef notandi er skráður inn?>
 		<li>
-			<a href="upload.php" <?php if ($currentPage == "upload.php") { echo "class=\"current\""; } ?>>Upload</a>
-		</li>
-		<li>
-			<a href="upload.php" <?php if ($currentPage == "upload.php") { echo "class=\"current\""; } ?>>Þínar myndir</a>
+			<a href="upload.php" <?php if ($currentPage == "upload.php") { echo "class=\"current\""; } ?>>Mitt svæði</a>
 		</li>
 		<?php endif ?>
 	</ul>
