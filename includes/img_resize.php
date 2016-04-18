@@ -25,6 +25,10 @@ if ($_POST[pic])
 
 function img_resize( $tmpname, $size, $save_dir, $save_name, $maxisheight = 0 )
     {
+    //Delete thumbnail if it already exists
+    if (file_exists($save_dir.$save_name)) {
+        unlink($save_dir.$save_name);
+    }
     $save_dir     .= ( substr($save_dir,-1) != "/") ? "/" : "";
     $gis        = getimagesize($tmpname);
     $type        = $gis[2];

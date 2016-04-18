@@ -18,12 +18,11 @@ function isSuspect($val, $pattern, &$suspect) {
         }
     }
 }
-
 // check if the form has been submitted
 if (isset($_POST['sendregister'])) { //Register
-    $expected = ['username', 'password', 'email', 'name', 'sq1', 'sq2', 'sq1ans', 'sq2ans'];
+    $expected = ['username', 'password', 'email', 'firstname', 'lastname', 'sq1', 'sq2', 'sq1ans', 'sq2ans'];
     // set required fields
-    $required = ['username', 'password', 'email', 'name', 'sq1', 'sq2', 'sq1ans', 'sq2ans'];
+    $required = ['username', 'password', 'email', 'firstname', 'lastname', 'sq1', 'sq2', 'sq1ans', 'sq2ans'];
     // assume nothing is suspect
     $suspect = false;
     // create a pattern to locate suspect phrases
@@ -77,10 +76,51 @@ if (isset($_POST['sendregister'])) { //Register
         $missing['g-recaptcha'] = true;
     }
     if (!$suspect && !$missing && !$errors) {//Validated
-        $_SESSION['username'] = htmlspecialchars($username);
-        $_SESSION['password'] = htmlspecialchars($password);
-        $_SESSION['start'] = time();
-        header('Location: upload.php');
+        $validRegister = true;
+    }
+}
+if (isset($_POST['sendupdate'])) { //Register
+    $expected = ['username', 'password', 'email'];
+    // set required fields
+    $required = ['username', 'password', 'email'];
+    // assume nothing is suspect
+    $suspect = false;
+    // create a pattern to locate suspect phrases
+    $pattern = '/Content-Type:|Bcc:|Cc:/i';
+
+    // check the $_POST array and any subarrays for suspect content
+    isSuspect($_POST, $pattern, $suspect);
+
+    if (!$suspect) {
+        foreach ($_POST as $key => $value) {
+            // assign to temporary variable and strip whitespace if not an array
+            $temp = is_array($value) ? $value : trim($value);
+            // if empty and required, add to $missing array
+            if (empty($temp) && in_array($key, $required)) {
+                $missing[] = $key;
+                ${$key} = '';
+            } elseif (in_array($key, $expected)) {
+                // otherwise, assign to a variable of the same name as $key
+                ${$key} = $temp;
+            }
+        }
+        foreach ($required as $key => $value) {
+            //if required variable does not exist
+            if (!isset(${$value})) {
+                $missing[] = $value;
+            }
+        }
+    }
+    // validate the user's email
+    if (!$suspect && !empty($email)) {
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        $validemail = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        if (!$validemail) {
+            $errors['email'] = true;
+        }
+    }
+    if (!$suspect && !$missing && !$errors) {//Validated
+        $validUpdate = true;
     }
 }
 if (isset($_POST['sendlogin'])) { //Login
@@ -116,9 +156,49 @@ if (isset($_POST['sendlogin'])) { //Login
         }
     }
     if (!$suspect && !$missing && !$errors) {//Validated
-        $_SESSION['username'] = htmlspecialchars($login_username);
-        $_SESSION['password'] = htmlspecialchars($login_password);
-        $_SESSION['start'] = time();
-        header('Location: upload.php');
+        $validLogin = true;
+    }
+}
+if (isset($_POST['reviewImage'])) { //Login
+    $expected = ['nafn', 'texti', 'flokkur', 'visibility'];
+    // set required fields
+    $required = ['nafn'];
+    // assume nothing is suspect
+    $suspect = false;
+    // create a pattern to locate suspect phrases
+    $pattern = '/Content-Type:|Bcc:|Cc:/i';
+
+    // check the $_POST array and any subarrays for suspect content
+    isSuspect($_POST, $pattern, $suspect);
+
+    if (!$suspect) {
+        foreach ($_POST as $key => $value) {
+            // assign to temporary variable and strip whitespace if not an array
+            $temp = is_array($value) ? $value : trim($value);
+            // if empty and required, add to $missing array
+            if (is_array($temp)) {
+                foreach ($temp as $otherKey => $otherValue) {
+                    if (empty($otherValue) && in_array($key, $required)) {
+                    $missing[] = $key;
+                    }
+                }
+            }
+            if (empty($temp) && in_array($key, $required)) {
+                $missing[] = $key;
+                ${$key} = '';
+            } elseif (in_array($key, $expected)) {
+                // otherwise, assign to a variable of the same name as $key
+                ${$key} = $temp;
+            }
+        }
+        foreach ($required as $key => $value) {
+            //if required variable does not exist
+            if (!isset(${$value})) {
+                $missing[] = $value;
+            }
+        }
+    }
+    if (!$suspect && !$missing && !$errors) {//Validated
+        $validReview = true;
     }
 }

@@ -1,6 +1,7 @@
 <?php
     //Starts session and checks timeout
 	require_once './includes/session_timeout.php';
+	require_once './includes/dbcon.php';
  ?>
 <?php include'./includes/title.php';?>
 <!DOCTYPE html>

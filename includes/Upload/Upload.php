@@ -3,6 +3,7 @@ namespace Includes;
 class Upload {
     protected $uploaded = [];
     protected $destination;
+    protected $tempdestination;
     protected $max = 51200;
     protected $messages = [];
     protected $permitted = [
@@ -18,12 +19,18 @@ class Upload {
     protected $renameDuplicates;
     protected $success;
     protected $tmp_name;
+    protected $imgname;
+    protected $imgdesc;
+    protected $user_id;
+    protected $category_id;
+    protected $name_list;
 
-    public function __construct($path) {
+    public function __construct($path, $temppath) {
         if (!is_dir($path) || !is_writable($path)) {
             throw new \Exception("$path must be a valid, writable directory.");
         }
         $this->destination = $path;
+        $this->tempdestination = $temppath;
     }
 
     public function upload($renameDuplicates = true) {
@@ -47,6 +54,7 @@ class Upload {
         } else {
             if ($this->checkFile($uploaded)) {
                 $this->moveFile($uploaded);
+                $this->addImage($uploaded);
                 if ($this->typeCheckingOn) {
                     $this->resizeImage($uploaded);
                 }
@@ -56,20 +64,23 @@ class Upload {
 
     protected function resizeImage($file){
         require_once("includes/img_resize.php");
-        $tmpname = $this->destination;
+        $tmpname = $this->tempdestination;
         $tmpname .= isset($this->newName) ? $this->newName : $file['name'];
         $size = 400;
-        $save_dir = "img/thumbs/";
+        $save_dir = "img/temp/thumbs/";
         $save_name = "thumb_";
         $save_name .= isset($this->newName) ? $this->newName : $file['name'];
         $resize = img_resize($tmpname, $size, $save_dir, $save_name);
         if (!$resize) {
-            $this->messages[] =  "Could not resize image.";
+            $this->messages[] =  "Gat ekki gert smámynd.";
         }
     }
 
     public function getMessages() {
         return $this->messages;
+    }
+    public function getNameList() {
+        return $this->name_list;
     }
 
     public function getMaxSize() {
@@ -85,7 +96,6 @@ class Upload {
             $this->max = (int) $num;
         }
     }
-
     public function allowAllTypes($suffix = true) {
         $this->typeCheckingOn = false;
         if (!$suffix) {
@@ -122,17 +132,17 @@ class Upload {
         switch($file['error']) {
             case 1:
             case 2:
-                $this->messages[] = $file['name'] . ' is too big: (max: ' .
+                $this->messages[] = $file['name'] . ' er of stór: (max: ' .
                     $this->getMaxSize() . ').';
                 break;
             case 3:
-                $this->messages[] = $file['name'] . ' was only partially uploaded.';
+                $this->messages[] = $file['name'] . ' var aðeins upphalað að hluta til.';
                 break;
             case 4:
-                $this->messages[] = 'No file submitted.';
+                $this->messages[] = 'Engin skrá send.';
                 break;
             default:
-                $this->messages[] = 'Sorry, there was a problem uploading ' . $file['name'];
+                $this->messages[] = 'Því miður varð vandamál við að hlaða upp ' . $file['name'];
                 break;
         }
     }
@@ -141,11 +151,10 @@ class Upload {
         if ($file['error'] == 1 || $file['error'] == 2) {
             return false;
         } elseif ($file['size'] == 0) {
-            $this->messages[] = $file['name'] . ' is an empty file.';
+            $this->messages[] = $file['name'] . ' er tóm skrá.';
             return false;
         } elseif ($file['size'] > $this->max) {
-            $this->messages[] = $file['name'] . ' exceeds the maximum size
-                for a file (' . $this->getMaxSize() . ').';
+            $this->messages[] = $file['name'] . ' fer yfir stærðarmörk skráa (' . $this->getMaxSize() . ').';
             return false;
         } else {
             return true;
@@ -157,7 +166,7 @@ class Upload {
             return true;
         } else {
             if (!empty($file['type'])) {
-                $this->messages[] = $file['name'] . ' is not permitted type of file.';
+                $this->messages[] = $file['name'] . ' er ekki leyfð tegund af skrá.';
             }
             return false;
         }
@@ -177,7 +186,7 @@ class Upload {
         }
         if ($this->renameDuplicates) {
             $name = isset($this->newName) ? $this->newName : $file['name'];
-            $existing = scandir($this->destination);
+            $existing = array_merge(scandir($this->destination),scandir($this->tempdestination));
             if (in_array($name, $existing)) {
                 // rename file
                 $basename = pathinfo($name, PATHINFO_FILENAME);
@@ -195,15 +204,38 @@ class Upload {
 
     protected function moveFile($file) {
         $filename = isset($this->newName) ? $this->newName : $file['name'];
-        $this->success = move_uploaded_file($file['tmp_name'], $this->destination . $filename);
+        $this->name_list[] = $filename;
+        $this->success = move_uploaded_file($file['tmp_name'], $this->tempdestination . $filename);
         if ($this->success) {
-            $result = $file['name'] . ' was uploaded successfully';
+            $result = 'Upphleðsla skráarinnar ' . $file['name'] . ' tókst';
             if (!is_null($this->newName)) {
-                $result .= ', and was renamed ' . $this->newName;
+                $result .= ', og hún var endurnefnd ' . $this->newName;
             }
             $this->messages[] = $result;
         } else {
-            $this->messages[] = 'Could not upload ' . $file['name'];
+            $this->messages[] = 'Gat ekki hlaðið upp ' . $file['name'];
+        }
+    }
+
+    protected function addImage($file)
+    {
+        require_once './includes/dbcon.php';
+        require_once './includes/Images/Images.php';
+        $dbImages = new Images($conn);
+
+
+        $image_path .= isset($this->newName) ? $this->newName : $file['name'];
+        if (!isset($this->imgname) || is_null($this->imgname)) {
+            $this->imgname = $image_path;
+        }
+        if (!isset($this->imgdesc) ||is_null($this->imgdesc)) {
+            $this->imgdesc = null;
+        }
+
+        $result = $dbImages->newImage($this->imgname, $image_path, $this->imgdesc, $this->category_id, $this->user_id);
+
+        if (!$result) {
+            $this->messages[] = 'Vandamál við að setja ' . $file['name'] . ' inn í gagnagrunn';
         }
     }
 

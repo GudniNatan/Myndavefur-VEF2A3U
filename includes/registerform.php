@@ -25,14 +25,30 @@
         	<input type="email" name="email" placeholder="Netfang*" required title="Netfang" <?php if (($missing || $errors) && isset($email)) { echo 'value="' . htmlentities($email) . '"'; } ?>>
         </div>
         <div class="form-group">
-        	<p for="name">Nafn:
-			<?php if ($missing && in_array('name', $missing)) { ?>
-			<span class="warning">Filla þarf út þennan reit</span>
-			<?php } ?>
-			</p>
-        	<input type="text" name="name" placeholder="Fullt Nafn*" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,50}$" title="Fullt Nafn" <?php if (($missing || $errors) && isset($name)) { echo 'value="' . htmlentities($name) . '"'; } ?>>
+            <p for="firstname">Fyrra nafn:
+            <?php if ($missing && in_array('name', $missing)) { ?>
+            <span class="warning">Filla þarf út þennan reit</span>
+            <?php } ?>
+            </p>
+            <input type="text" name="firstname" placeholder="Fyrra Nafn*" required pattern="^[a-zA-Z][a-zA-Z0-9-_ ðÐþÞáÁéÉæÆúÚóÓÖöýÝ\.]{4,50}$" title="Fyrra Nafn" <?php if (($missing || $errors) && isset($firstname)) { echo 'value="' . htmlentities($firstname) . '"'; } ?>>
         </div>
         <div class="form-group">
+            <p for="lastname">Seinna nafn:
+            <?php if ($missing && in_array('name', $missing)) { ?>
+            <span class="warning">Filla þarf út þennan reit</span>
+            <?php } ?>
+            </p>
+            <input type="text" name="lastname" placeholder="Seinna Nafn*" required pattern="^[a-zA-Z][a-zA-Z0-9-_ ðÐþÞáÁéÉæÆúÚóÓÖöýÝ\.]{4,50}$" title="Seinna Nafn" <?php if (($missing || $errors) && isset($lastname)) { echo 'value="' . htmlentities($lastname) . '"'; } ?>>
+        </div>
+        <div class="form-group">
+            <?php 
+            require_once './includes/dbcon.php';
+            require_once'./includes/Users/Users.php';  
+
+            $dbUsers = new Users($conn);
+            $questionList = $dbUsers->questionList();
+
+            ?>
         	<label>Öryggisspurningar:</label>
         	<p>1
         	<?php if ($missing && (in_array('sq1', $missing) || in_array('sq1ans', $missing))) { ?>
@@ -40,9 +56,11 @@
 			<?php } ?>
 			</p>
         	<select name="sq1" required>
-        		<option value="1" <?php if (($missing || $errors) && isset($sq1) && htmlentities($sq1) == '1') { echo 'selected="selected"'; } ?>>Hver var fyrsti kennarinn þinn?</option>
-        		<option value="2" <?php if (($missing || $errors) && isset($sq1) && htmlentities($sq1) == '2') { echo 'selected="selected"'; } ?>>Hver er uppáhalds bókin þín?</option>
-        		<option value="3" <?php if (($missing || $errors) && isset($sq1) && htmlentities($sq1) == '3') { echo 'selected="selected"'; } ?>>Hvar áttir þú heima sem barn?</option>
+                <?php foreach ($questionList as $key => $value): ?>
+                    <?php if ($value[2] == 1): ?>
+                        <option value="<?php echo $value[0]; ?>" <?php if (($missing || $errors) && isset($sq1) && htmlentities($sq1) == '1') { echo 'selected="selected"'; } ?>><?php echo $value[1]; ?></option>
+                    <?php endif ?>
+                <?php endforeach ?>
         	</select>
         	<input type="text" name="sq1ans" placeholder="...*" required title="Svaraðu öryggisspurningunni." <?php if (($missing || $errors) && isset($sq1ans)) { echo 'value="' . htmlentities($sq1ans) . '"'; } ?>>
 
@@ -52,9 +70,11 @@
 			<?php } ?>
 			</p>
         	<select name="sq2" required>
-        		<option value="1" <?php if (($missing || $errors) && isset($sq2) && htmlentities($sq2) == '1') { echo 'selected="selected"'; } ?>>Hver var besti æskuvinur þinn?</option>
-        		<option value="2" <?php if (($missing || $errors) && isset($sq2) && htmlentities($sq2) == '2') { echo 'selected="selected"'; } ?>>Uppáhalds skáldaða persónan þín?</option>
-        		<option value="3" <?php if (($missing || $errors) && isset($sq2) && htmlentities($sq2) == '3') { echo 'selected="selected"'; } ?>>Hvað hét fyrsta gæludýrið þitt?</option>
+                <?php foreach ($questionList as $key => $value): ?>
+                    <?php if ($value[2] == 2): ?>
+                        <option value="<?php echo $value[0]; ?>" <?php if (($missing || $errors) && isset($sq1) && htmlentities($sq1) == '1') { echo 'selected="selected"'; } ?>><?php echo $value[1]; ?></option>
+                    <?php endif ?>
+                <?php endforeach ?>
         	</select>
         	<input type="text" name="sq2ans" placeholder="...*" required title="Svaraðu öryggisspurningunni." <?php if (($missing || $errors) && isset($sq2ans)) { echo 'value="' . htmlentities($sq2ans) . '"'; } ?>>
 		</div>

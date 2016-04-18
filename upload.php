@@ -1,6 +1,7 @@
 <?php
 //Session Timeout
 require_once './includes/session_timeout.php';
+require_once './includes/Images/Images.php';
 //check if user is logged in, else redirect
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
@@ -9,6 +10,7 @@ if (!isset($_SESSION['username'])) {
 ?>
 <?php
 require_once("./includes/getimages.php");
+require_once './includes/Upload/Upload.php';
 
 use Includes\Upload;
 
@@ -16,8 +18,7 @@ use Includes\Upload;
 $max = 2048 * 1024; // 600 KB
 if (isset($_POST['upload'])) {
     // define the path to the upload folder
-    $destination = 'img/large/';
-    require_once 'includes/imageupload.php';
+    $destination = 'img/temp/large/';
     try {
         $loader = new Upload($destination);
         $loader->setMaxSize($max);
@@ -26,9 +27,20 @@ if (isset($_POST['upload'])) {
     } catch (Exception $e) {
         echo $e->getMessage();
     }
+    if ($result) {
+        if (isset($_SESSION['upload'])) {
+            $_SESSION['upload'] = array_merge($_SESSION['upload'], $loader->getNameList());
+        }
+        else{
+            $_SESSION['upload'] = $loader->getNameList();
+        }
+        header("Location: review.php");
+        die();
+    }
 }
 
 //Gets all images user can delete.
+//Replace with database
 $filenames = buildFileList($dir, ['jpg', 'png', 'gif', 'jpeg']);
 
 if (isset($_POST['delete'])) {
@@ -40,6 +52,7 @@ if (isset($_POST['delete'])) {
 }
 
 //Gets files in image dir
+//Replace with database
 function buildFileList($dir, $extensions) {
     if (!is_dir($dir) || !is_readable($dir)) {
         return false;
@@ -68,6 +81,13 @@ function buildFileList($dir, $extensions) {
     <?php include("./includes/menu.php") ?>
 <div class="containall">
     <main>
+        <div class="fullWidthCenter mobileOnly">
+            <div class="info">
+                <div>
+                    <p>User: <?php echo $_SESSION['username']; ?> | <a href="logout.php" class="warning">Logout</a></p>
+                </div>
+            </div>
+        </div>
     	<form action="" method="post" enctype="multipart/form-data" id="uploadImage">
 	    	<?php
 			if (isset($result)) {
@@ -78,20 +98,25 @@ function buildFileList($dir, $extensions) {
 			    echo '</ul>';
 			}
 			?>
-		    Select image to upload (Max 2mb):
-		    <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
+            <div class="form-group">
+		        <p><label>Select image to upload (Max 2mb):</label></p>
+                <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
+            </div>
+            <p>Nafn, lýsing, tegund o.s.frv. valið á næstu síðu.</p>
 		    <input type="submit" name="upload" id="upload" value="Upload">
 		</form>
         <form action="" method="post">
-            <p>Skoða og eyða skrám</p>
-            <select name="id">
-                <?php
-                foreach ($filenames as $key => $value) {
-                    $name = basename($value);
-                    echo "<option value='{$key}'>{$name}</option>";
-                } 
-                ?>
-            </select>
+            <div class="form-group">
+                <label>Skoða og eyða skrám</label>
+                <select name="id">
+                    <?php
+                    foreach ($filenames as $key => $value) {
+                        $name = basename($value);
+                        echo "<option value='{$key}'>{$name}</option>";
+                    } 
+                    ?>
+                </select>
+            </div>
             <input type="submit" name="delete" id="delete" value="Delete image">
         </form>
         <?php  if (isset($_POST['upload'])) {

@@ -18,5 +18,5 @@
 		</div>
 	<button name="sendlogin" type="submit" class="pure-button pure-input-1 pure-button-primary">Skrá inn</button>
 	<p><i>*Fylla þarf út þessa reiti</i></p>
-	<p><a href="forgotpassword.php">Ég gleymdi lykilorðinu mínu.</a></p>
+	<p><a href="forgotpassword.php" target="_blank">Ég gleymdi lykilorðinu mínu.</a></p>
 </form>

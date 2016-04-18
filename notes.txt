@@ -1,0 +1,11 @@
+Breyta þarf þessum skrám fyrir database:
+getimages.php
+browseimage.php
+images.php
+formprocess.php
+upload.php
+
+Kannski tagga myndir með notenda sem uploadaði þeim?
+Setja notenda sem setti inn myndina allstaðar þar sem þær birtast
+Sýna email adressu hjá notenda í header
+
