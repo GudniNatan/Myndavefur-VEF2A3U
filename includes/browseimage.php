@@ -47,14 +47,14 @@
     if (!$error): ?>
 <div>
 	<h3><?php echo htmlentities($imgname);?></h3>
-    <a href="<?php echo('./img/large/' . $imgpath); ?>"><img class="browseImg"<?php echo "src='./img/large/{$imgpath}'"; ?>></a>
+    <a href="<?php echo('./img/large/' . $imgpath); ?>"><img class="browseImg" id="image"<?php echo "src='./img/large/{$imgpath}'"; ?>></a>
     <div class="imageMenu">
     <?php if ($previmg != 0): //PREV BUTTON?>
-        <a href="browse.php?img=<?php echo "$previmg"; ?>" style="color: #1f6684;" class="prevImg btn btn-default">←</a>
+        <a href="browse.php?img=<?php echo "$previmg"; ?>#image" style="color: #1f6684;" class="prevImg btn btn-default">←</a>
     <?php endif ?>
-        <a href="browse.php?img=<?php echo "$randomimg";?>" style="color: #1f6684;" class="randImg btn btn-default convert-emoji">🔀</a>
+        <a href="browse.php?img=<?php echo "$randomimg";?>#image" style="color: #1f6684;" class="randImg btn btn-default convert-emoji">🔀</a>
     <?php if ($nextimg != 0): //NEXT BUTTON?>
-        <a href="browse.php?img=<?php echo "$nextimg"; ?>" style="color: #1f6684;" class="nextImg btn btn-default">→</a>
+        <a href="browse.php?img=<?php echo "$nextimg"; ?>#image" style="color: #1f6684;" class="nextImg btn btn-default">→</a>
     <?php endif ?>
     </div>
 </div>
