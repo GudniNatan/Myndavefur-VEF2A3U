@@ -74,6 +74,13 @@ header{
     color: rgb(0, 0, 0);
     line-height: 1;
 }
+.fullWidth{
+    display: block;
+    width: 100%;
+}
+.center{
+    text-align: center;
+}
 .headerLink{
     width: 100%;
 }
@@ -105,7 +112,7 @@ header .userinfo p{
     margin: 0 auto;
     text-align: center;
 }
-header .userinfo p a{
+header .userinfo p a:last-child{
     color: orange;
 }
 .quote{
@@ -229,9 +236,6 @@ article p{
 }
 form, .subForm{
     color: #333;
-    max-width: 50%;
-    width: 40em;
-    text-align: center;
 }
 form div div div{
     margin: 1em auto;
@@ -247,6 +251,9 @@ footer{
     background-position: bottom center;
     background-image: url('img/footer.png');
 }
+select{
+    margin-bottom: 0.5em;
+}
 .info{
     color: #DDD;
     display: inline-flex;
@@ -261,6 +268,13 @@ footer{
     padding: .5em 1em;
     border: 0.15em dashed rgba(0,0,0,0.8);
     border-radius: 1em;
+}
+.updateImageDiv{
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 1em;
+    padding: 1em;
+    margin-top: 2em;
+    height: 100%;
 }
 .hidden{
     display: none;
@@ -356,6 +370,31 @@ footer{
     margin: 0;
     display: inline-block;
 }
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+.form-horizontal div{
+    margin-right: 0.3em;
+}
+.white-text{
+    color: #DDD;
+}
 
 @media (max-width: 40em) {
     .containall{
@@ -423,5 +462,13 @@ footer{
     }
     nav ul li:first-child{
         border-left: 1px solid rgba(15, 48, 62, 0.3);
+    }
+}
+@media (max-width: 70em){
+    .superForm{
+        text-align: center;
+    }
+    .superForm *:not(.center){
+        text-align: left;
     }
 }

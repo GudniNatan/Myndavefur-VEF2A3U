@@ -24,7 +24,7 @@
 			<a href="browse.php?img=<?php echo $latestImage; ?>">Browse</a>
 		</li>
 		<li <?php if ($currentPage == "login.php") { echo "class=\"current\""; } ?>>
-			<a href="login.php">Login/Register</a>
+			<a href="login.php">Login / Register</a>
 		</li>
 		<?php if (isset($_SESSION['username'])): #Ef notandi er skráður inn?>
 		<li <?php if ($currentPage == "userpage.php") { echo "class=\"current\""; } ?>>

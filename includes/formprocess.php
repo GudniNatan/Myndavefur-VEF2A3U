@@ -159,7 +159,50 @@ if (isset($_POST['sendlogin'])) { //Login
         $validLogin = true;
     }
 }
-if (isset($_POST['reviewImage'])) { //Login
+if (isset($_POST['reviewImage'])) {
+    $expected = ['nafn', 'texti', 'flokkur', 'visibility'];
+    // set required fields
+    $required = ['nafn'];
+    // assume nothing is suspect
+    $suspect = false;
+    // create a pattern to locate suspect phrases
+    $pattern = '/Content-Type:|Bcc:|Cc:/i';
+
+    // check the $_POST array and any subarrays for suspect content
+    isSuspect($_POST, $pattern, $suspect);
+
+    if (!$suspect) {
+        foreach ($_POST as $key => $value) {
+            // assign to temporary variable and strip whitespace if not an array
+            $temp = is_array($value) ? $value : trim($value);
+            // if empty and required, add to $missing array
+            if (is_array($temp)) {
+                foreach ($temp as $otherKey => $otherValue) {
+                    if (empty($otherValue) && in_array($key, $required)) {
+                    $missing[] = $key;
+                    }
+                }
+            }
+            if (empty($temp) && in_array($key, $required)) {
+                $missing[] = $key;
+                ${$key} = '';
+            } elseif (in_array($key, $expected)) {
+                // otherwise, assign to a variable of the same name as $key
+                ${$key} = $temp;
+            }
+        }
+        foreach ($required as $key => $value) {
+            //if required variable does not exist
+            if (!isset(${$value})) {
+                $missing[] = $value;
+            }
+        }
+    }
+    if (!$suspect && !$missing && !$errors) {//Validated
+        $validReview = true;
+    }
+}
+if (isset($_POST['updateImage'])) {
     $expected = ['nafn', 'texti', 'flokkur', 'visibility'];
     // set required fields
     $required = ['nafn'];

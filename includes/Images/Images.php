@@ -18,7 +18,7 @@
 			}
 		}
 
-		public function newImage($image_name, $image_path, $image_text, $category_id, $user_id, $visibility)
+		public function newImage($image_name, $image_path, $image_text, $category_id, $user_id, $visibility, $imageSize, $imageType)
 		{
 			//Velur random int sem er ekki í notkun.
 			$i = 0;
@@ -29,7 +29,7 @@
 				}
 				$i++;
 			}
-			$statement = $this->connection->prepare('call NewImage(?,?,?,?,?,?,?)');
+			$statement = $this->connection->prepare('call NewImage(?,?,?,?,?,?,?,?,?)');
 			$statement->bindParam(1,$rnd);
 			$statement->bindParam(2,$image_name);
 			$statement->bindParam(3,$image_path);
@@ -37,6 +37,9 @@
 			$statement->bindParam(5,$category_id);
 			$statement->bindParam(6,$user_id);
 			$statement->bindParam(7,$visibility);
+			$statement->bindParam(8,$imageSize);
+			$statement->bindParam(9,$imageType);
+
 			try 
 			{
 				$statement->execute();
@@ -92,15 +95,14 @@
 			}
 
 		}
-		public function updateImage($image_id, $image_name, $image_path, $image_text, $category_id, $visibility = 0)
+		public function updateImage($image_id, $image_name, $image_text, $category_id, $visibility = 0)
 		{
-			$statement = $this->connection->prepare('call UpdateImage(?,?,?,?,?,?)');
+			$statement = $this->connection->prepare('call UpdateImage(?,?,?,?,?)');
 			$statement->bindParam(1,$image_id);
 			$statement->bindParam(2,$image_name);
-			$statement->bindParam(3,$image_path);
-			$statement->bindParam(4,$image_text);
-			$statement->bindParam(5,$category_id);
-			$statement->bindParam(6,$visibility);
+			$statement->bindParam(3,$image_text);
+			$statement->bindParam(4,$category_id);
+			$statement->bindParam(5,$visibility);
 			
 			try 
 			{

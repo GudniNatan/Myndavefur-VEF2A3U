@@ -6,7 +6,7 @@
 <header class="custom-wrapper pure-g" id="menu">
 	<?php if (isset($_SESSION['username'])):  ?>
 	<div class="userinfo">
-		<p>User: <?php echo $_SESSION['username']; ?> | <a href="logout.php">Logout</a></p>
+		<p>User: <a href="userpage.php" class="white-text"><?php echo $_SESSION['username']; ?></a> | <a href="logout.php">Logout</a></p>
 	</div>
 	<?php endif; ?>
 	<div class="logo">

@@ -54,7 +54,7 @@ if ((isset($validRegister) || isset($validLogin)) && $status) {//Valid
 					
 					<?php if ($errors): ?>
 					<ul>
-					<?phpu
+					<?php
 						foreach ($errors as $key => $value) {
 							if (is_array($value)) {
 								echo "<li>";

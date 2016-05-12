@@ -2,10 +2,13 @@ drop database if exists 1803982879_PictureBase;
 create database 1803982879_PictureBase;
 use 1803982879_PictureBase;
 
+drop table if exists categories;
+
 create table categories 
 (
   categoryID int(11) not null auto_increment,
-  categoryName varchar(45) default null,
+  categoryName varchar(60) default null,
+  categoryReadable varchar(45) default null,
   constraint category_PK primary key(categoryID),
   constraint categoryname_NQ unique(categoryName)
 );
@@ -47,7 +50,7 @@ create table images
   categoryID int(11) default null,
   userID int(11) default null,
   creation datetime default now(),
-  visibility int(11) default 0, -- 0 = Public, 1 = Unlisted, 2 = Private
+  visibility int(11) default null, -- 0 = Public, 1 = Unlisted, 2 = Private
   
   constraint image_PH primary key(imageID),
   constraint image_category_FK foreign key(categoryID) references categories (categoryID),
@@ -104,10 +107,10 @@ delimiter $$
 drop procedure if exists NewImage $$
 
 
-create procedure NewImage(image_id int(11), image_name varchar(255),image_path varchar(255),image_text varchar(155),category_id int, user_id int(11), visibility varchar(255))
+create procedure NewImage(image_id int(11), image_name varchar(255),image_path varchar(255),image_text varchar(255),category_id int(11), user_id int(11), visibility_id int(11))
 begin
-	insert into Images(imageID,imageName,imagePath,imageText,categoryID,userID)
-    values(image_id,image_name,image_path,image_text,category_id,user_id);
+	insert into Images(imageID,imageName,imagePath,imageText,categoryID,userID,visibility)
+    values(image_id,image_name,image_path,image_text,category_id,user_id,visibility_id);
 end$$
 delimiter ;
 
@@ -118,7 +121,7 @@ drop procedure if exists GetImage $$
 
 create procedure GetImage(image_id int)
 begin
-	select I.imageID,I.imageName,I.imagePath,I.imageText,C.categoryName, I.userID
+	select I.imageID,I.imageName,I.imagePath,I.imageText,C.categoryName, I.userID, I.categoryID, I.visibility
     from Images I
     inner join Categories C on I.categoryID = C.categoryID
     and I.imageID = image_id;
@@ -131,7 +134,7 @@ drop procedure if exists ImageList $$
 
 create procedure ImageList()
 begin
-	select I.imageID,I.imagePath,I.imageName,C.categoryName
+	select I.imageID,I.imagePath,I.imageName,C.categoryName, I.userID, I.imageText
     from Images I
     inner join Categories C on I.categoryID = C.categoryID
     order by creation;
@@ -159,13 +162,12 @@ drop procedure if exists UpdateImage $$
 create procedure UpdateImage(
 	image_id int,
     image_name varchar(255),
-    image_path varchar(255),
     image_text varchar(155),
-    category_id int, 
-    visibility varchar(255)
+    category_id int(11), 
+    visibility_id int(11)
 )
 begin
-	update Images set imageName = image_name, imagePath = image_path, imageText = image_text, categoryID = category_id
+	update Images set imageName = image_name, imageText = image_text, categoryID = category_id, visibility = visibility_id
     where imageID = image_id;
 end$$
 delimiter ;
@@ -355,6 +357,7 @@ call NewQuestion('Hver var fyrsti kennarinn þinn?', 1);
 call NewQuestion('Hver er uppáhalds bókin þín?', 1);
 call NewQuestion('Hvar áttir þú heima sem barn?', 1);
 
-call NewQuestion('Hver var besti æskuvinur þinn?', 2);
-call NewQuestion('Uppáhalds skáldaða persónan þín?', 2);
 call NewQuestion('Hvað hét fyrsta gæludýrið þitt?', 2);
+call NewQuestion('Uppáhalds skáldaða persónan þín?', 2);
+call NewQuestion('Hver var besti æskuvinur þinn?', 2);
+

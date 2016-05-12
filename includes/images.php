@@ -7,7 +7,8 @@
 
     $list = $dbImages->imageList();
 
-    for ($i= count($list) - 1; $i >= 0; $i--) { 
+    for ($i= count($list) - 1; $i >= 0; $i--) {
+        if ($dbImages->getImage($list[$i][0])[7] == 1){
         echo "<article>
             <p>".htmlspecialchars($list[$i][2])."</p>
             <figure class='img'>
@@ -16,5 +17,7 @@
             <div class='fadeout'></div>
         </article>
         ";
+        }
+        
     }
     

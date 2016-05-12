@@ -18,10 +18,11 @@
 			}
 		}
 
-		public function newCategory($category_name)
+		public function newCategory($category_name, $category_readable)
 		{
-			$statement = $this->connection->prepare('call NewCategory(?,?,?,?)');
+			$statement = $this->connection->prepare('call NewCategory(?,?)');
 			$statement->bindParam(1,$category_name);
+			$statement->bindParam(2,$category_readable);
 			try 
 			{
 				$statement->execute();
@@ -37,6 +38,24 @@
 		{
 			$statement = $this->connection->prepare('call GetCategory(?)');
 			$statement->bindParam(1,$category_id);
+			
+			try 
+			{
+				$statement->execute();
+				
+				$row = $statement->fetch(PDO::FETCH_NUM);
+				return $row;
+			}
+			catch(PDOException $e)
+			{
+				return array();
+			}
+
+		}
+		public function getCategoryID($category_name)
+		{
+			$statement = $this->connection->prepare('call GetCategoryID(?)');
+			$statement->bindParam(1,$category_name);
 			
 			try 
 			{

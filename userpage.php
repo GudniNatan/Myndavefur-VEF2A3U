@@ -21,8 +21,8 @@ $max = 2048 * 1024; // 600 KB
 if (isset($_POST['upload'])) {
 	if (isset($_SESSION['upload'])) {
 		foreach ($_SESSION['upload'] as $key => $value) {
-			unlink("./img/thumbs/thumb_" . $value);
-			unlink("./img/large/" . $value);
+			unlink("./img/temp/thumbs/thumb_" . $value);
+			unlink("./img/temp/large/" . $value);
 		}
 		unset($_SESSION['upload']);
 	}
@@ -34,10 +34,11 @@ if (isset($_POST['upload'])) {
         $loader->setMaxSize($max);
         $loader->upload();
         $result = $loader->getMessages();
+        $success = $loader->getSuccessStatus();
     } catch (Exception $e) {
         echo $e->getMessage();
     }
-    if ($result) {
+    if ($success) {
         if (isset($_SESSION['upload'])) {
             $_SESSION['upload'] = array_merge($_SESSION['upload'], $loader->getNameList());
         }
@@ -80,24 +81,38 @@ if (isset($_POST['delete'])) {
                 </div>
             </div>
         </div>
-    	<form action="" method="post" enctype="multipart/form-data" id="uploadImage">
-	    	<?php
-			if (isset($result)) {
-			    echo '<ul>';
-			    foreach ($result as $message) {
-			        echo "<li>$message</li>";
-			    }
-			    echo '</ul>';
-			}
-			?>
-            <div class="form-group">
-		        <p><label>Select image to upload (Max 2mb):</label></p>
-                <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
-            </div>
-            <p>Nafn, lýsing, tegund o.s.frv. valið á næstu síðu.</p>
-		    <input type="submit" name="upload" id="upload" value="Upload">
+        <?php if (isset($result)): ?>        
+        <div class="fullWidthCenter">
+			<div class="info">
+				<div>
+					<p>Lagaðu eftirfarandi <span class="warning">villur</span>.</p>
+					<?php
+					    echo '<ul>';
+					    foreach ($result as $message) {
+					        echo "<li>$message</li>";
+					    }
+					    echo '</ul>';
+					?>
+				</div>
+			</div>
+		</div>
+		<?php endif ?>
+    	<form action="" method="post" enctype="multipart/form-data" id="uploadImage" class="updateImageDiv col-md-3 col-xs-10">	
+		    <label>Veldu eina eða fleiri myndir til að hala upp (Max 2mb):</label>
+		    <div class="form-group">
+		    	<div class="input-group">
+		            <span class="input-group-btn">
+		                <span class="btn btn-default btn-file">
+		                    Velja skár&hellip; <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
+		                </span>
+		            </span>
+		            <input type="text" class="form-control" readonly>
+		        </div>
+		    </div>
+            <p><i>Nafn, lýsing, tegund o.s.frv. valið á næstu síðu.</i></p>
+		    <input type="submit" name="upload" id="upload" value="Hala upp skrá" class="btn btn-default">
 		</form>
-        <form action="" method="post">
+        <form action="" method="post" class="updateImageDiv col-md-3 col-xs-10">
             <label>Breyta grunnupplýsingum</label>
         	<div class="form-group">
 	        	<p for="username">Notendanafn:
@@ -105,7 +120,7 @@ if (isset($_POST['delete'])) {
 				<span class="warning">Filla þarf út þennan reit</span>
 				<?php } ?>
 				</p>
-	           	<input type="text" name="username" placeholder="Notendanafn*" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,20}$" title="Notendanafn, minnst fimm stafir" <?php if (isset($_SESSION['username'])) { echo 'value="' . htmlentities($_SESSION['username']) . '"'; } ?>>
+	           	<input type="text" class="form-control input-md" name="username" placeholder="Notendanafn*" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,20}$" title="Notendanafn, minnst fimm stafir" <?php if (isset($_SESSION['username'])) { echo 'value="' . htmlentities($_SESSION['username']) . '"'; } ?>>
 	        </div>
 	        <div class="form-group">
 	           	<p for="password">Lykilorð:
@@ -113,7 +128,7 @@ if (isset($_POST['delete'])) {
 				<span class="warning">Filla þarf út þennan reit</span>
 				<?php } ?>
 				</p>
-	        	<input type="password" name="password" placeholder="Lykilorð*" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,20}$" title="Lykilorð" <?php if (($missing || $errors) && isset($password)) { echo 'value="' . htmlspecialchars($password) . '"'; } ?>>
+	        	<input type="password" class="form-control input-md" name="password" placeholder="Lykilorð*" required pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,20}$" title="Lykilorð" <?php if (($missing || $errors) && isset($password)) { echo 'value="' . htmlspecialchars($password) . '"'; } ?>>
 	        </div>
 	        <div class="form-group">
 	        	<p for="email">Netfang:
@@ -121,13 +136,13 @@ if (isset($_POST['delete'])) {
 				<span class="warning">Filla þarf út þennan reit</span>
 				<?php } ?>
 				</p>
-	        	<input type="email" name="email" placeholder="Netfang*" required title="Netfang" <?php if (isset($_SESSION['user_email'])) { echo 'value="' . htmlentities($_SESSION['user_email']) . '"'; } ?>>
+	        	<input type="email" class="form-control input-md" name="email" placeholder="Netfang*" required title="Netfang" <?php if (isset($_SESSION['user_email'])) { echo 'value="' . htmlentities($_SESSION['user_email']) . '"'; } ?>>
 	        </div>
-            <input type="submit" name="sendupdate" id="sendupdate" value="Update info">
+            <input type="submit" name="sendupdate" id="sendupdate" value="Update info" class="btn btn-default">
         </form>
         <div class="flexContainer">
 	        <div style="width: 100%; text-align: center;">
-				<label class="warning">Skoða og eyða skrám</label>
+				<h2>Þínar myndir</h2>
 			</div>
 			<?php if (empty($filenames)): ?>
 			<div>
@@ -139,7 +154,7 @@ if (isset($_POST['delete'])) {
             <div>
             	<?php $imageTitle = (strlen($value[2]) >= 40) ? substr($value[2], 0, 37)."..." : $value[2]; ?>
 			    <p><?php echo htmlspecialchars($imageTitle)?></p>
-		        <a href="deleteimage.php?id=<?php echo $value[0]; ?>">Delete image</a>
+		        <a href="deleteimage.php?id=<?php echo $value[0]; ?>" class="warning">Eyða mynd</a>
 			    <figure>
 			        <a href='browse.php?img=<?php echo $value[0];?>'><img src='./img/thumbs/thumb_<?php echo $value[1];?>'></a>
 			    </figure>
@@ -150,5 +165,27 @@ if (isset($_POST['delete'])) {
     </main>
 </div>
 <?php include("./includes/footer.php") ?>
+<script type="text/javascript">
+	$(document).on('change', '.btn-file :file', function() {
+	    var input = $(this),
+	        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+	        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+	    input.trigger('fileselect', [numFiles, label, this]);
+	});
+	$(document).ready( function() {
+	    $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+	        
+	        var input = $(this).parents('.input-group').find(':text'),
+	            log = numFiles > 1 ? numFiles + ' files selected' : label;
+	        
+	        if( input.length ) {
+	            input.val(log);
+	        } else {
+	            if( log ) alert(log);
+	        }
+	        
+	    });
+	});
+</script>
 </body>
 </html>
